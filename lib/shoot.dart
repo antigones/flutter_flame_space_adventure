@@ -2,11 +2,12 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flutter_game/asteroid.dart';
 import 'package:flutter_game/space_shooter_game.dart';
 
 import 'main.dart';
 
-class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable {
+class Shoot extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable {
   bool _isWallHit = false;
   bool _isCollision = false;
 
@@ -14,12 +15,12 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
   Future<void> onLoad() async {
     await super.onLoad();
     var rng = Random();
-    sprite = await gameRef.loadSprite('asteroid.png');
+    sprite = await gameRef.loadSprite('fire.png');
 
-    position.x = 75+rng.nextInt(gameRef.size.x.round()-80) as double;
-    position.y = 40;
-    width = 71;
-    height = 71;
+    position.x = gameRef.player.position.x;
+    position.y = gameRef.player.position.y -   80;
+    width = 50;
+    height = 50;
     anchor = Anchor.center;
 
     final shape = HitboxPolygon([
@@ -33,23 +34,33 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
 
   @override
   void update(double dt) {
-    position.y += 10;
-    if (_isWallHit) {
+    position.y -= 10;
+    if (_isWallHit || _isCollision) {
       removeFromParent();
+      _isCollision = false;
       _isWallHit = false;
       return;
     }
-    _isCollision = false;
+
   }
 
   @override
   void onCollision(Set<Vector2> points, Collidable other) {
     if (other is ScreenCollidable) {
       _isWallHit = true;
-      print('asteroid wallhit');
+      print('shoot wallhit');
+      removeFromParent();
       return;
     }
-    _isCollision = true;
+
+    if (other is Asteroid) {
+      _isCollision = true;
+      print('asteroid shoot');
+      other.removeFromParent();
+      removeFromParent();
+      return;
+    }
+
 
   }
 }

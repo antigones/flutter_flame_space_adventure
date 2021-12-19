@@ -7,6 +7,7 @@ import 'package:flame/input.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_game/asteroid.dart';
 import 'package:flutter_game/space_shooter_game.dart';
 
 import 'main.dart';
@@ -68,6 +69,9 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
       _isWallHit = true;
       print('wallhit');
       return;
+    }
+    if (other is Asteroid) {
+      print('asteroid hit');
     }
     _isCollision = true;
 
