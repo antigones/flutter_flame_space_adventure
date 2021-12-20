@@ -58,6 +58,10 @@ class Shoot extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbox
       print('asteroid shoot');
       other.removeFromParent();
       removeFromParent();
+
+      gameRef.score += 100;
+
+
       return;
     }
 
