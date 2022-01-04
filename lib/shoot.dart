@@ -18,7 +18,7 @@ class Shoot extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbox
     sprite = await gameRef.loadSprite('fire.png');
 
     position.x = gameRef.player.position.x;
-    position.y = gameRef.player.position.y -   80;
+    position.y = gameRef.player.position.y - 80;
     width = 50;
     height = 50;
     anchor = Anchor.center;
