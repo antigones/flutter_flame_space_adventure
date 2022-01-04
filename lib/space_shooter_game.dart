@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_game/player.dart';
 import 'package:flutter_game/shoot.dart';
-import 'package:flutter_game/star.dart';
+
 import 'dart:math';
 import 'dart:async' as asy;
 import 'dart:math';
@@ -22,9 +22,13 @@ class SpaceShooterGame extends FlameGame
   late Asteroid asteroid;
   late Timer timer;
   late TextComponent scoreText;
-  int score = 0;
+  late TextComponent timerText;
+  late asy.Timer starsTimer;
+  late asy.Timer asteroidTimer;
+  late asy.Timer gameTimer;
 
-  late int asteroidCount = 0;
+  int score = 0;
+  int gameTime = 10;
 
   Vector2 viewportResolution = Vector2(
     1920,
@@ -40,59 +44,92 @@ class SpaceShooterGame extends FlameGame
     camera.setRelativeOffset(Anchor.topLeft);
     camera.speed = 1;
 
-    player = Player();
-    add(player);
     add(ScreenCollidable());
+    player = Player();
 
-    final rnd = Random();
-    Vector2 randomVector2() =>
-        (Vector2.random(rnd) - Vector2.random(rnd)) * 100;
-    final asy.Timer timer_stars =
-    asy.Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      add(ParticleComponent(
-        AcceleratedParticle(
-          // Will fire off in the center of game canvas
-          position:
-          Vector2(Random().nextInt(viewportResolution.x.round()).toDouble(), 0),
-          // With random initial speed of Vector2(-100..100, 0..-100)
-          speed: Vector2(0, viewportResolution.length),
-          // Accelerating downwards, simulating "gravity"
-          // speed: Vector2(0, 100),
-          child: CircleParticle(
-            radius: 2.0,
-            paint: Paint()
-              ..color = Colors.white,
-          ),
-        ),
-      ));
-    });
 
-    final asy.Timer timer =
-    asy.Timer.periodic(const Duration(milliseconds: 2000), (timer) {
-      asteroid = Asteroid();
-      add(asteroid);
-    });
+
+
 
     // add score text on top
-    final style = TextStyle(color: BasicPalette.white.color, fontSize: 14);
+    final style = TextStyle(color: BasicPalette.white.color, fontSize: 30);
     final regular = TextPaint(style: style);
     scoreText = TextComponent(text: 'Score: $score', textRenderer: regular)
       ..anchor = Anchor.topCenter
       ..x = 600 / 2
       ..y = 32.0;
     add(scoreText);
+
+    // add timer text on top
+
+    timerText = TextComponent(text: 'Timer: $gameTime', textRenderer: regular)
+      ..anchor = Anchor.topRight
+      ..x = viewportResolution.x - 50
+      ..y = 32.0;
+    add(timerText);
+    startGame();
   }
 
-  /*@override
-  void onPanUpdate(DragUpdateInfo info) {
-    player.move(info.delta.game);
+  void endGame() {
+    player.removeFromParent();
+    asteroidTimer.cancel();
+    gameTimer.cancel();
   }
-  */
+
+  void pauseGame() {
+      player.removeFromParent();
+      asteroidTimer.cancel();
+      gameTimer.cancel();
+      starsTimer.cancel();
+  }
+
+  void resumeGame() {
+    starsTimer =
+        asy.Timer.periodic(const Duration(milliseconds: 100), (timer) {
+          add(ParticleComponent(
+            AcceleratedParticle(
+              lifespan: 1.0,
+              // Will fire off in the center of game canvas
+              position:
+              Vector2(Random().nextInt(viewportResolution.x.round()).toDouble(), 0),
+              // With random initial speed of Vector2(-100..100, 0..-100)
+              speed: Vector2(0, viewportResolution.length),
+              // Accelerating downwards, simulating "gravity"
+              // speed: Vector2(0, 100),
+              child: CircleParticle(
+                radius: 2.0,
+                paint: Paint()
+                  ..color = Colors.white,
+              ),
+            ),
+          ));
+        });
+    asteroidTimer =
+        asy.Timer.periodic(const Duration(milliseconds: 2000), (timer) {
+          asteroid = Asteroid();
+          add(asteroid);
+        });
+    gameTimer =
+        asy.Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+          gameTime -= 1;
+        });
+  }
+
+  void startGame() {
+    gameTime = 10;
+    add(player);
+    resumeGame();
+  }
 
   @override
   void update(double dt) {
     super.update(dt);
     scoreText.text = 'Score: $score';
+    timerText.text = 'Timer: $gameTime';
+    if (gameTime == 0) {
+     endGame();
+    }
+
   }
 
   @override
@@ -143,9 +180,11 @@ class SpaceShooterGame extends FlameGame
     if (document.visibilityState == 'visible') {
      print('foreground');
      resumeEngine();
+     resumeGame();
     } else {
       print('background');
       pauseEngine();
+      pauseGame();
     }
   }
 

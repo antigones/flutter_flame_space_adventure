@@ -41,14 +41,9 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
     addHitbox(shape);
   }
 
-  /*void move(Vector2 delta) {
-    position.add(delta);
-  }*/
-
   @override
   void update(double dt) {
     if (_isWallHit) {
-      //removeFromParent();
       position.x = gameRef.size.x/2;
       position.y = gameRef.size.y-20;
       _isWallHit = false;
@@ -57,11 +52,6 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
     debugColor = _isCollision ? _collisionColor : _defaultColor;
     _isCollision = false;
   }
-/*
-  @override
-  void render(Canvas canvas) {
-    renderHitboxes(canvas);
-  }*/
 
   @override
   void onCollision(Set<Vector2> points, Collidable other) {
@@ -72,6 +62,8 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
     }
     if (other is Asteroid) {
       print('asteroid hit');
+      gameRef.score = 0;
+    return;
     }
     _isCollision = true;
 

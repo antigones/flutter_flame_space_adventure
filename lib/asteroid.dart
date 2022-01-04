@@ -8,7 +8,6 @@ import 'main.dart';
 
 class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable {
   bool _isWallHit = false;
-  bool _isCollision = false;
 
   @override
   Future<void> onLoad() async {
@@ -38,7 +37,6 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
       _isWallHit = false;
       return;
     }
-    _isCollision = false;
   }
 
   @override
@@ -48,6 +46,5 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
       print('asteroid wallhit');
       return;
     }
-    _isCollision = true;
   }
 }

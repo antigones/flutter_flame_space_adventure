@@ -63,6 +63,7 @@ flutter:
     - assets/images/spaceship.png
     - assets/images/asteroid.png
     - assets/images/fire.png
+    - assets/images/buttons.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
