@@ -30,11 +30,12 @@ Widget endMenuBuilder(BuildContext context, SpaceShooterGame game) {
                   pressedSrcPosition: Vector2(0, 20),
                   pressedSrcSize: Vector2(60, 20),
                   onPressed: () {
+                    game.overlays.remove('EndMenu');
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => GameWidget(
                           game: SpaceShooterGame(),
                           overlayBuilderMap: const {
-                            'PauseMenu': endMenuBuilder,
+                            'EndMenu': endMenuBuilder,
                           },
                         )));
                   },
