@@ -26,7 +26,7 @@ class SpaceShooterGame extends FlameGame
   late asy.Timer gameTimer;
 
   int score = 0;
-  int gameTime = 120;
+  int gameTime = 10;
 
   Vector2 viewportResolution = Vector2(
     600,
@@ -68,6 +68,7 @@ class SpaceShooterGame extends FlameGame
     player.removeFromParent();
     asteroidTimer.cancel();
     gameTimer.cancel();
+    overlays.add('EndMenu');
 
   }
 
@@ -111,7 +112,7 @@ class SpaceShooterGame extends FlameGame
   }
 
   void startGame() {
-    gameTime = 120;
+    gameTime = 10;
     add(player);
     resumeGame();
   }
