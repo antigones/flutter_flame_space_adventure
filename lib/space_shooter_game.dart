@@ -103,7 +103,7 @@ class SpaceShooterGame extends FlameGame
           ));
         });
     asteroidTimer =
-        asy.Timer.periodic(const Duration(milliseconds: 500), (timer) {
+        asy.Timer.periodic(const Duration(milliseconds: 1000), (timer) {
           asteroid = Asteroid();
           add(asteroid);
         });

@@ -16,7 +16,7 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
     await super.onLoad();
     var rng = Random();
     sprite = await gameRef.loadSprite('asteroid.png');
-    position.x = 75 + rng.nextInt(gameRef.viewportResolution.x.round() - 150).toDouble();
+    position.x = 75 + rng.nextInt(gameRef.viewportResolution.x.round() - 160).toDouble();
     position.y = 40;
     width = 71;
     height = 71;
