@@ -15,6 +15,19 @@ class MainMenu extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              'Space Adventure',
+              style: TextStyle(fontFamily: 'Fipps', color: Color(0xFFFFCD75), fontSize: 30),
+              textAlign: TextAlign.center,
+            ),
+            const Text(
+              'An adventure of spaceships, captains and asteroids',
+              style: TextStyle(fontFamily: 'Fipps', color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+            Container(
+              height: 20,
+            ),
             Container(
             color: Colors.black,
             width: 250,
@@ -34,7 +47,8 @@ class MainMenu extends StatelessWidget {
               },
               label: const Text(
                 'Start game',
-                style: TextStyle(color: Color(0xFF5D275D)),
+                  style: TextStyle(fontFamily: 'Fipps', color: Color(0xFF5D275D))
+                //style: TextStyle(color: Color(0xFF5D275D)),
               ),
               width:250,
               height: 75,
