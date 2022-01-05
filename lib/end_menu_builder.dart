@@ -17,6 +17,12 @@ Widget endMenuBuilder(BuildContext context, SpaceShooterGame game) {
                     fontFamily: 'Fipps', color: Color(0xFFFFCD75), fontSize: 30),
                 textAlign: TextAlign.center,
               ),
+              Text(
+                'Your score: '+ game.score.toString(),
+                style: const TextStyle(
+                    fontFamily: 'Fipps', color: Color(0xFFFFCD75), fontSize: 30),
+                textAlign: TextAlign.center,
+              ),
               Container(
                 color: Colors.black,
                 width: 250,
