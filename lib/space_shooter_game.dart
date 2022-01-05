@@ -2,7 +2,6 @@ import 'dart:html';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/geometry.dart';
 import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/particles.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_game/shoot.dart';
 
 import 'dart:math';
 import 'dart:async' as asy;
-import 'dart:math';
 import 'asteroid.dart';
 
 class SpaceShooterGame extends FlameGame
@@ -28,11 +26,11 @@ class SpaceShooterGame extends FlameGame
   late asy.Timer gameTimer;
 
   int score = 0;
-  int gameTime = 10;
+  int gameTime = 120;
 
   Vector2 viewportResolution = Vector2(
-    1920,
-    1080,
+    600,
+    1024,
   );
 
 
@@ -46,10 +44,6 @@ class SpaceShooterGame extends FlameGame
 
     add(ScreenCollidable());
     player = Player();
-
-
-
-
 
     // add score text on top
     final style = TextStyle(color: BasicPalette.white.color, fontSize: 30);
@@ -74,10 +68,11 @@ class SpaceShooterGame extends FlameGame
     player.removeFromParent();
     asteroidTimer.cancel();
     gameTimer.cancel();
+
   }
 
   void pauseGame() {
-      player.removeFromParent();
+      //player.removeFromParent();
       asteroidTimer.cancel();
       gameTimer.cancel();
       starsTimer.cancel();
@@ -116,7 +111,7 @@ class SpaceShooterGame extends FlameGame
   }
 
   void startGame() {
-    gameTime = 10;
+    gameTime = 120;
     add(player);
     resumeGame();
   }
@@ -128,6 +123,7 @@ class SpaceShooterGame extends FlameGame
     timerText.text = 'Timer: $gameTime';
     if (gameTime == 0) {
      endGame();
+
     }
 
   }

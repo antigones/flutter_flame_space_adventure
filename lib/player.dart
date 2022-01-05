@@ -15,10 +15,8 @@ import 'main.dart';
 class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable {
   // HasGameRef, adds gameRef var, pointing to current FlameGame
   // SpriteComponent, a game component with Sprites
-  final _collisionColor = Colors.amber;
-  final _defaultColor = Colors.cyan;
   bool _isWallHit = false;
-  bool _isCollision = false;
+
 
   @override
   Future<void> onLoad() async {
@@ -49,8 +47,7 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
       _isWallHit = false;
       return;
     }
-    debugColor = _isCollision ? _collisionColor : _defaultColor;
-    _isCollision = false;
+
   }
 
   @override
@@ -60,12 +57,8 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
       print('wallhit');
       return;
     }
-    if (other is Asteroid) {
-      print('asteroid hit');
-      gameRef.score = 0;
-    return;
-    }
-    _isCollision = true;
+
+
 
   }
 

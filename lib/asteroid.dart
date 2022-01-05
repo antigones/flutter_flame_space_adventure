@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flutter_game/player.dart';
 import 'package:flutter_game/space_shooter_game.dart';
 
 import 'main.dart';
 
 class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable {
   bool _isWallHit = false;
+  bool _isPlayerHit = false;
 
   @override
   Future<void> onLoad() async {
@@ -37,6 +39,13 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
       _isWallHit = false;
       return;
     }
+
+    if (_isPlayerHit) {
+      removeFromParent();
+      _isPlayerHit = false;
+      gameRef.score = 0;
+      return;
+    }
   }
 
   @override
@@ -44,6 +53,13 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
     if (other is ScreenCollidable) {
       _isWallHit = true;
       print('asteroid wallhit');
+      return;
+    }
+
+    if (other is Player) {
+      // asteroid hit the player
+      _isPlayerHit = true;
+      print('asteroid hit the player');
       return;
     }
   }
