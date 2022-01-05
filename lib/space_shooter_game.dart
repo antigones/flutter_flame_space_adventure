@@ -15,7 +15,7 @@ import 'dart:async' as asy;
 import 'asteroid.dart';
 
 class SpaceShooterGame extends FlameGame
-    with PanDetector, KeyboardEvents, HasCollidables {
+    with PanDetector, KeyboardEvents, HasCollidables, DoubleTapDetector  {
   late Player player;
   late Asteroid asteroid;
   late Timer timer;
@@ -26,18 +26,20 @@ class SpaceShooterGame extends FlameGame
   late asy.Timer gameTimer;
 
   int score = 0;
-  int gameTime = 10;
+  int gameTime = 30;
 
   Vector2 viewportResolution = Vector2(
     600,
     1024,
   );
 
+  late final JoystickComponent joystick;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     document.addEventListener("visibilitychange", onVisibilityChange);
+
     camera.viewport = FixedResolutionViewport(viewportResolution);
     camera.setRelativeOffset(Anchor.topLeft);
     camera.speed = 1;
@@ -46,17 +48,17 @@ class SpaceShooterGame extends FlameGame
     player = Player();
 
     // add score text on top
-    final style = TextStyle(color: BasicPalette.white.color, fontSize: 30);
+    final style = TextStyle(fontFamily: 'Fipps',color: BasicPalette.white.color, fontSize: 20);
     final regular = TextPaint(style: style);
     scoreText = TextComponent(text: 'Score: $score', textRenderer: regular)
-      ..anchor = Anchor.topCenter
-      ..x = 600 / 2
+      ..anchor = Anchor.topLeft
+      ..x = 10
       ..y = 32.0;
     add(scoreText);
 
     // add timer text on top
 
-    timerText = TextComponent(text: 'Timer: $gameTime', textRenderer: regular)
+    timerText = TextComponent(text: 'Time: $gameTime', textRenderer: regular)
       ..anchor = Anchor.topRight
       ..x = viewportResolution.x - 50
       ..y = 32.0;
@@ -101,7 +103,7 @@ class SpaceShooterGame extends FlameGame
           ));
         });
     asteroidTimer =
-        asy.Timer.periodic(const Duration(milliseconds: 2000), (timer) {
+        asy.Timer.periodic(const Duration(milliseconds: 500), (timer) {
           asteroid = Asteroid();
           add(asteroid);
         });
@@ -112,7 +114,7 @@ class SpaceShooterGame extends FlameGame
   }
 
   void startGame() {
-    gameTime = 10;
+    gameTime = 30;
     add(player);
     resumeGame();
   }
@@ -121,13 +123,25 @@ class SpaceShooterGame extends FlameGame
   void update(double dt) {
     super.update(dt);
     scoreText.text = 'Score: $score';
-    timerText.text = 'Timer: $gameTime';
+    timerText.text = 'Time: $gameTime';
     if (gameTime == 0) {
      endGame();
-
     }
 
   }
+
+  @override
+  void onPanUpdate(DragUpdateInfo info) {
+    player.move(info.delta.game);
+  }
+
+  @override
+  void onDoubleTap() {
+    print("double tap");
+    Shoot shoot = Shoot();
+    add(shoot);
+  }
+
 
   @override
   KeyEventResult onKeyEvent(RawKeyEvent event,

@@ -12,11 +12,11 @@ import 'package:flutter_game/space_shooter_game.dart';
 
 import 'main.dart';
 
-class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable {
+class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitboxes, Collidable  {
   // HasGameRef, adds gameRef var, pointing to current FlameGame
   // SpriteComponent, a game component with Sprites
   bool _isWallHit = false;
-
+  bool _isAsteroidHit = false;
 
   @override
   Future<void> onLoad() async {
@@ -58,8 +58,10 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
       return;
     }
 
+  }
 
-
+  void move(Vector2 delta) {
+    position.add(delta);
   }
 
 }

@@ -16,7 +16,7 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
     await super.onLoad();
     var rng = Random();
     sprite = await gameRef.loadSprite('asteroid.png');
-    position.x = 75 + rng.nextInt(gameRef.viewportResolution.x.round() - 80).toDouble();
+    position.x = 75 + rng.nextInt(gameRef.viewportResolution.x.round() - 150).toDouble();
     position.y = 40;
     width = 71;
     height = 71;
@@ -36,6 +36,9 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
     position.y += 10;
     if (_isWallHit) {
       removeFromParent();
+      if (gameRef.score > 0) {
+        gameRef.score -= 100;
+      }
       _isWallHit = false;
       return;
     }
@@ -53,6 +56,7 @@ class Asteroid extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHit
     if (other is ScreenCollidable) {
       _isWallHit = true;
       print('asteroid wallhit');
+
       return;
     }
 
