@@ -33,7 +33,7 @@ class MainMenu extends StatelessWidget {
             Container(
               color: Colors.black,
               width: 250,
-              height: 75,
+              height: 85,
               padding: const EdgeInsets.all(20),
               child: SpriteButton.asset(
                 path: 'buttons.png',
@@ -55,7 +55,7 @@ class MainMenu extends StatelessWidget {
                     style: TextStyle(
                         fontFamily: 'Fipps', color: Color(0xFF5D275D))),
                 width: 250,
-                height: 75,
+                height: 85,
               ),
             )
           ],
