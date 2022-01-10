@@ -16,11 +16,12 @@ import 'asteroid.dart';
 
 class SpaceShooterGame extends FlameGame
     with PanDetector, KeyboardEvents, HasCollidables, DoubleTapDetector  {
-  late Player player;
-  late Asteroid asteroid;
-  late Timer timer;
+
   late TextComponent scoreText;
   late TextComponent timerText;
+
+  late Player player;
+
   late asy.Timer starsTimer;
   late asy.Timer asteroidTimer;
   late asy.Timer gameTimer;
@@ -32,8 +33,6 @@ class SpaceShooterGame extends FlameGame
     600,
     1024,
   );
-
-  late final JoystickComponent joystick;
 
   @override
   Future<void> onLoad() async {
@@ -104,7 +103,7 @@ class SpaceShooterGame extends FlameGame
         });
     asteroidTimer =
         asy.Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-          asteroid = Asteroid();
+          Asteroid asteroid = Asteroid();
           add(asteroid);
         });
     gameTimer =

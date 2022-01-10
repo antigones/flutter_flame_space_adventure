@@ -16,7 +16,6 @@ class Player extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbo
   // HasGameRef, adds gameRef var, pointing to current FlameGame
   // SpriteComponent, a game component with Sprites
   bool _isWallHit = false;
-  bool _isAsteroidHit = false;
 
   @override
   Future<void> onLoad() async {
