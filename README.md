@@ -1,3 +1,3 @@
 # Flutter Flame Space Adventure
 
-A Flutter game develope with Flame.
+A Flutter game developed with Flame.
