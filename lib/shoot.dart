@@ -49,7 +49,6 @@ class Shoot extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbox
     if (other is ScreenCollidable) {
       _isWallHit = true;
       print('shoot wallhit');
-      removeFromParent();
       return;
     }
 
@@ -57,7 +56,6 @@ class Shoot extends SpriteComponent with HasGameRef<SpaceShooterGame>, HasHitbox
       _isCollision = true;
       print('asteroid shoot');
       other.removeFromParent();
-      removeFromParent();
       gameRef.score += 100;
       return;
     }
