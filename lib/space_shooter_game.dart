@@ -1,4 +1,4 @@
-import 'dart:html';
+
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -7,9 +7,9 @@ import 'package:flame/palette.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_game/bg_manager.dart';
 import 'package:flutter_game/player.dart';
 import 'package:flutter_game/shoot.dart';
-
 import 'dart:math';
 import 'dart:async' as asy;
 import 'asteroid.dart';
@@ -37,7 +37,9 @@ class SpaceShooterGame extends FlameGame
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    BGManager bgManager = BGManager();
+    bgManager.handleVisibility(this);
 
     camera.viewport = FixedResolutionViewport(viewportResolution);
     camera.setRelativeOffset(Anchor.topLeft);
@@ -167,35 +169,32 @@ class SpaceShooterGame extends FlameGame
     return KeyEventResult.ignored;
   }
 
+
   @override
   void lifecycleStateChange(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
       // resume the engine
-          resumeEngine();
-          print('resume');
+        resumeEngine();
+        resumeGame();
+        print('resume');
         break;
       case AppLifecycleState.paused:
-      case AppLifecycleState.detached:
-      case AppLifecycleState.inactive:
         print('pause');
+        pauseEngine();
+        pauseGame();
+        break;
+      case AppLifecycleState.detached:
+        print('detached');
+        pauseEngine();
+        break;
+      case AppLifecycleState.inactive:
+        print('inactive');
         pauseEngine();
         break;
     }
     super.lifecycleStateChange(state);
   }
 
-  void onVisibilityChange(Event e) {
-    // do something
-    if (document.visibilityState == 'visible') {
-     print('foreground');
-     resumeEngine();
-     resumeGame();
-    } else {
-      print('background');
-      pauseEngine();
-      pauseGame();
-    }
-  }
 
 }
